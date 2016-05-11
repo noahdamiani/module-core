@@ -3,7 +3,7 @@ var App = App || {};
 App.container = $('#my-app');
 App.container.sortable();
 
-Sandbox = function(obj) {
+Chassis = function(obj) {
 	return {
 		toolbox: function(el) {
 			var self = this;
@@ -43,7 +43,7 @@ App.Core = function($) {
 
 		start: function(moduleId) {
 			var self = this;
-			moduleData[moduleId].instance = moduleData[moduleId].generator(new Sandbox(this));
+			moduleData[moduleId].instance = moduleData[moduleId].generator(new Chassis(this));
 			moduleData[moduleId].instance.init();
 			this.eventMapper(moduleData[moduleId].instance);
 		},

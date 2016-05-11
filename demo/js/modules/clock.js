@@ -1,6 +1,6 @@
-App.Core.register('Clock', function(sb) {
+App.Core.register('Clock', function(ch) {
 	return {
-		el: sb.dom.find('#module-3'),
+		el: ch.dom.find('#module-3'),
 
 		events: {
 			'click .button': function(e) {
@@ -18,7 +18,7 @@ App.Core.register('Clock', function(sb) {
 		},
 
 		init: function() {
-			sb.toolbox(this.el);
+			ch.toolbox(this.el);
 			$clock = this.el.find('.clock');
 			this.startClock($('.button'));
 		},

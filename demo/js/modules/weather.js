@@ -1,6 +1,6 @@
-App.Core.register('Weather', function(sb) {
+App.Core.register('Weather', function(ch) {
 	return {
-		el: sb.dom.find('#module-2'),
+		el: ch.dom.find('#module-2'),
 
 		events: {
 			'click .button': function(e) {
@@ -12,7 +12,7 @@ App.Core.register('Weather', function(sb) {
 		},
 
 		init: function() {
-			sb.toolbox(this.el);
+			ch.toolbox(this.el);
 			$weatherPanel = this.el.find('ul');
 			this.getTodaysWeather();
 		},
