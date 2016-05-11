@@ -42,7 +42,6 @@ App.Core = function($) {
 		},
 
 		startAll: function() {
-			App.container.fadeIn('slow');
 			for (var moduleId in moduleData) {
 				if (moduleData.hasOwnProperty(moduleId)) {
 					this.start(moduleId);

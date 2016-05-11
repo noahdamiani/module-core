@@ -4,8 +4,8 @@ App.Core.register('Weather', function(ch) {
 
 		events: {
 			'click .button': function(e) {
-				this.getTodaysWeather();
 				var update = $('<div class="weather-update-alert">Weather has been updated</div>');
+				this.getTodaysWeather();
 				this.el.append(update);
 				update.delay(2000).fadeOut('slow');
 			}
