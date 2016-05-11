@@ -1,0 +1,49 @@
+<!doctype HTML>
+<html>
+<head>
+	<title>sandbox</title>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.1/foundation.min.css">
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+	
+	<div id="my-app">
+		<h1 class="logo">module core</h1>
+		<div id="module-1" class="module">
+			<a class="module-closer">x</a>
+			<h1 class="module-title">Todo</h1>
+			<ul class="todo-list">
+				<li class="test">grocery shopping</li>
+				<li>clean house</li>
+				<li>drop laundry off</li>
+			</ul>
+			<button class="btn button">add item</button>
+		</div>
+
+		<div id="module-2" class="module">
+			<a class="module-closer">x</a>
+			<h1 class="module-title">Weather</h1>
+			<ul>
+
+			</ul>
+			<button class="btn button">update weather</button>
+		</div>
+
+		<div id="module-3" class="module">
+			<a class="module-closer">x</a>
+			<h1 class="module-title">Clock</h1>
+			<div class="clock"></div><br>
+			<button class="btn button">stop clock</button>
+		</div>
+
+	</div>
+	<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<script src="js/core.js"></script>
+	<script type="text/javascript" src="js/modules/todo.js"></script>
+	<script type="text/javascript" src="js/modules/weather.js"></script>
+	<script type="text/javascript" src="js/modules/clock.js"></script>
+	<script type="text/javascript">App.Core.startAll();</script>
+
+</body>
+</html>

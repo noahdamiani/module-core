@@ -1,0 +1,45 @@
+body {
+	background: #fbfbfb;
+}
+
+#my-app {
+	display: none;
+	max-width: 1024px;
+	margin: 0 auto;
+}
+
+.logo {
+	text-align: center;
+	margin: 1em 0;
+}
+
+.module {
+	background: #fff;
+	border: 3px solid #ebebeb;
+	box-sizing: border-box;
+	padding: 2em;
+	position: relative;
+	float: left;
+	margin-left: 2%;
+	width: 31%;
+}
+
+.module-closer {
+	position: absolute;
+	right: 15px;
+	top: 10px;
+}
+
+.module-title {
+	border-bottom: 3px solid #333;
+	margin-bottom: 0.2em;
+	margin-top: -0.5em;
+}
+
+.weather-update-alert {
+	color: red;
+}
+
+.clock {
+	font-size: 38px;
+}
