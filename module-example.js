@@ -1,7 +1,7 @@
 App.Core.register('Todo', function(ch) {
 	return {
 		// Define Module DOM by ID or Class
-		el: ch.dom.find('#module-1'),
+		el: '#module-1',
 
 		// Click events in format 'event selector': function(e) { }
 		// "this" will reference module object, use $(e.currentTarget) to reference current event's selector
