@@ -1,18 +1,18 @@
 App.Core.register('Weather', function(ch) {
 	return {
-		el: $('#module-2'),
+		el: '#module-2',
 
 		events: {
 			'click .button': function(e) {
 				var update = $('<div class="weather-update-alert">Weather has been updated</div>');
 				this.getTodaysWeather($('.city').val());
-				this.el.append(update);
+				$(this.el).append(update);
 				update.delay(2000).fadeOut('slow');
 			}
 		},
 
 		init: function() {
-			$weatherPanel = this.el.find('ul');
+			$weatherPanel = $(this.el).find('ul');
 			this.getTodaysWeather();
 		},
 

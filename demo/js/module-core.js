@@ -1,11 +1,7 @@
 var App = App || {};
 
-App.container = $('#my-app');
-App.container.sortable();
-
 Chassis = function(obj) {
 	return {
-		dom: App.Core.dom,
 		getData: function(ajax) {
 			var request = new XMLHttpRequest();
 			request.open(ajax.type, ajax.url, true);
@@ -19,13 +15,10 @@ Chassis = function(obj) {
 	}
 };
 
-App.Core = function($) {
+App.Core = function() {
 	var moduleData = {};
 
 	return {
-		dom: function() {
-			return $;
-		},
 
 		register: function(moduleId, generator) {
 			moduleData[moduleId] = {
@@ -36,6 +29,8 @@ App.Core = function($) {
 
 		start: function(moduleId) {
 			moduleData[moduleId].instance = moduleData[moduleId].generator(new Chassis(this));
+			moduleData[moduleId].instance.elString = moduleData[moduleId].instance.el;
+			moduleData[moduleId].instance.el = document.querySelector(moduleData[moduleId].instance.el);
 			moduleData[moduleId].instance.init();
 			this.eventMapper(moduleData[moduleId].instance);
 		},
@@ -70,13 +65,15 @@ App.Core = function($) {
 			for (e in events) {
 				var myEvent = e.substr(0, e.indexOf(' ')),
 					second = e.substr(e.indexOf(' ')+1),
-					selector = module.el.selector + ' ' + second;
+					selector = document.querySelectorAll(module.elString + ' ' + second);
 				if(selector.length) {
-					$(document).on(myEvent, selector, events[e].bind(module));
+					for (var i = 0; i < selector.length; i++) {
+						selector[i].addEventListener(myEvent, events[e].bind(module));
+					}
 				} else {
 					throw 'Could not find ' + selector + ' while trying to create ' + myEvent + ' event in module.';
 				}
 			}
 		}
 	};
-}(jQuery);
+}();
