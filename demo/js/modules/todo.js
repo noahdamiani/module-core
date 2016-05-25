@@ -1,6 +1,6 @@
 App.Core.register('Todo', function(ch) {
 	return {
-		el: ch.dom.find('#module-1'),
+		el: $('#module-1'),
 
 		events: {
 			'click .todo-list li': function(e) {
@@ -13,7 +13,6 @@ App.Core.register('Todo', function(ch) {
 		},
 
 		init: function() {
-			ch.toolbox(this.el);
 			$list = this.el.find('.todo-list');
 		},
 

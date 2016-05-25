@@ -5,34 +5,30 @@ App.container.sortable();
 
 Chassis = function(obj) {
 	return {
-		toolbox: function(el) {
-			var self = this;
-
-			// Close Module
-			self.dom.click(el.find('.module-closer'), function() {
-				self.dom.find(el).remove();
-			});
-		},
-		dom: App.Core.dom
+		dom: App.Core.dom,
+		getData: function(ajax) {
+			var request = new XMLHttpRequest();
+			request.open(ajax.type, ajax.url, true);
+			request.onload = function() {
+			  if (request.status >= 200 && request.status < 400) {
+			  	ajax.success(JSON.parse(request.responseText));
+			  }
+			};
+			request.onerror = function() {
+				throw 'There was a connection error while trying to reach ' + url;
+			};
+			request.send();
+		}
 	}
-}
+};
 
 App.Core = function($) {
 	var moduleData = {};
-	var _dom = {
-		find: function(selector) {
-			return $(selector);
-		},
-		wrap: function(element) {
-			return $(element);
-		},
-		click: function(element, task) {
-			return $(element).click(task);
-		}
-	}
 
 	return {
-		dom: _dom,
+		dom: function() {
+			return $;
+		},
 
 		register: function(moduleId, generator) {
 			moduleData[moduleId] = {
@@ -75,18 +71,17 @@ App.Core = function($) {
 
 		eventMapper: function(module) {
 			var events = module.events,
-				doc = this.dom.find(document);
+				doc = $(document);
 			for (e in events) {
 				var myEvent = e.substr(0, e.indexOf(' ')),
 					second = e.substr(e.indexOf(' ')+1),
 					selector = module.el.selector + ' ' + second;
 				if(selector.length) {
-					doc.on(myEvent, selector, $.proxy(events[e], module));
+					doc.on(myEvent, selector, events[e].bind(module));
 				} else {
 					throw 'Could not find ' + selector + ' while trying to create ' + myEvent + ' event in module.';
 				}
 			}
-
 		}
 	};
 }(jQuery);
