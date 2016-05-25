@@ -38,11 +38,12 @@ App.Core = function() {
 		},
 
 		start: function(moduleId) {
-			moduleData[moduleId].instance = moduleData[moduleId].generator(new Chassis(this));
-			moduleData[moduleId].instance.elString = moduleData[moduleId].instance.el;
-			moduleData[moduleId].instance.el = document.querySelector(moduleData[moduleId].instance.el);
-			moduleData[moduleId].instance.init();
-			this.eventMapper(moduleData[moduleId].instance);
+			var mi = moduleData[moduleId].instance;
+			mi = moduleData[moduleId].generator(new Chassis(this));
+			mi.elString = mi.el;
+			mi.el = document.querySelector(mi.el);
+			mi.init();
+			this.eventMapper(mi);
 		},
 
 		startAll: function() {
