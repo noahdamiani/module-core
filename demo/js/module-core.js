@@ -14,9 +14,6 @@ Chassis = function(obj) {
 			  	ajax.success(JSON.parse(request.responseText));
 			  }
 			};
-			request.onerror = function() {
-				throw 'There was a connection error while trying to reach ' + url;
-			};
 			request.send();
 		}
 	}
@@ -38,7 +35,6 @@ App.Core = function($) {
 		},
 
 		start: function(moduleId) {
-			var self = this;
 			moduleData[moduleId].instance = moduleData[moduleId].generator(new Chassis(this));
 			moduleData[moduleId].instance.init();
 			this.eventMapper(moduleData[moduleId].instance);
@@ -70,14 +66,13 @@ App.Core = function($) {
 		},
 
 		eventMapper: function(module) {
-			var events = module.events,
-				doc = $(document);
+			var events = module.events;
 			for (e in events) {
 				var myEvent = e.substr(0, e.indexOf(' ')),
 					second = e.substr(e.indexOf(' ')+1),
 					selector = module.el.selector + ' ' + second;
 				if(selector.length) {
-					doc.on(myEvent, selector, events[e].bind(module));
+					$(document).on(myEvent, selector, events[e].bind(module));
 				} else {
 					throw 'Could not find ' + selector + ' while trying to create ' + myEvent + ' event in module.';
 				}

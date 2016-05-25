@@ -5,7 +5,7 @@ App.Core.register('Weather', function(ch) {
 		events: {
 			'click .button': function(e) {
 				var update = $('<div class="weather-update-alert">Weather has been updated</div>');
-				this.getTodaysWeather();
+				this.getTodaysWeather($('.city').val());
 				this.el.append(update);
 				update.delay(2000).fadeOut('slow');
 			}
@@ -17,24 +17,26 @@ App.Core.register('Weather', function(ch) {
 		},
 
 		appendWeather: function(data) {
+			var template = '<li>City: ' + data.name + '</li>' +
+			'<li>Wind Speed: ' + data.wind.speed + '</li>' +
+			'<li>Humidity: ' + data.main.humidity + '</li>' + 
+			'<li>Country: ' + data.sys.country + '</li>'; 
 			$weatherPanel.html('');
-			for(key in data) {
-				var weatherItem = $('<li>' + key + ': ' + data[key] + '</li>');
-				$weatherPanel.append(weatherItem);
-			}
+			$weatherPanel.append(template);
 		},
 
-		getTodaysWeather: function() {
+		getTodaysWeather: function(city) {
+			var city = city || 'London',
+				appId = '&APPID=9438d84dfeef9413bcc50fc5a4b17910';
 			ch.getData({
-				url: 'http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=9438d84dfeef9413bcc50fc5a4b17910', 
+				url: 'http://api.openweathermap.org/data/2.5/weather?q=' + city + appId, 
 				type: 'POST', 
 				success: this.updateSuccess.bind(this)
 			});
 		},
 
 		updateSuccess: function(data) {
-			$weatherInfo = data.list[0].weather[0];
-			this.appendWeather($weatherInfo);
+			this.appendWeather(data);
 		}
 	};
 });
