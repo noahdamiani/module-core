@@ -14,6 +14,21 @@ App.Core.register('Weather', function(ch) {
 		init: function() {
 			$weatherPanel = $(this.el).find('ul');
 			this.getTodaysWeather();
+
+			ch.sync({
+				url: 'http://jsonplaceholder.typicode.com/posts',
+				method: 'POST',
+				content: this.fixtures,
+				success: function(data) {
+					console.log(data);
+				}.bind(this)
+			});
+		},
+
+		fixtures: {
+			name: 'Test User',
+			email: 'testuser@mail.com',
+			post: 'I really love modules.'
 		},
 
 		appendWeather: function(data) {
@@ -28,9 +43,10 @@ App.Core.register('Weather', function(ch) {
 		getTodaysWeather: function(city) {
 			var city = city || 'London',
 				appId = '&APPID=9438d84dfeef9413bcc50fc5a4b17910';
-			ch.getData({
+
+			ch.sync({
 				url: 'http://api.openweathermap.org/data/2.5/weather?q=' + city + appId, 
-				type: 'POST', 
+				method: 'GET',
 				success: this.updateSuccess.bind(this)
 			});
 		},

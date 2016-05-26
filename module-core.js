@@ -2,7 +2,7 @@
 
 	Author: Noah Damiani
 	
-	Define your web app: App.container = $('#your-app-name');
+	Define your web app: App.container = document.getElementById('#your-app-name') |or jquery| $('#your-app-name');
 	Define Modules, reference module-example.js
 	Start module core: App.Core.startAll();
 	
@@ -12,15 +12,20 @@ var App = App || {};
 
 Chassis = function(obj) {
 	return {
-		getData: function(ajax) {
-			var request = new XMLHttpRequest();
-			request.open(ajax.type, ajax.url, true);
-			request.onload = function() {
-			  if (request.status >= 200 && request.status < 400) {
-			  	ajax.success(JSON.parse(request.responseText));
+		sync: function(sync) {
+			var xhr = new XMLHttpRequest();
+			xhr.open(sync.method, encodeURI(sync.url), true);
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xhr.onload = function() {
+			  if (xhr.status >= 200 && xhr.status < 400) {
+			  	sync.success(JSON.parse(xhr.responseText));
 			  }
 			};
-			request.send();
+			if(sync.hasOwnProperty('content')) {
+				xhr.send(JSON.stringify(sync.content));
+			} else {
+				xhr.send();
+			}
 		}
 	}
 };
@@ -47,7 +52,6 @@ App.Core = function() {
 		},
 
 		startAll: function() {
-			App.container.fadeIn('slow');
 			for (var moduleId in moduleData) {
 				if (moduleData.hasOwnProperty(moduleId)) {
 					this.start(moduleId);
@@ -72,14 +76,13 @@ App.Core = function() {
 		},
 
 		eventMapper: function(module) {
-			var events = module.events;
-			for (e in events) {
+			for (e in module.events) {
 				var myEvent = e.substr(0, e.indexOf(' ')),
 					second = e.substr(e.indexOf(' ')+1),
 					selector = document.querySelectorAll(module.elString + ' ' + second);
 				if(selector.length) {
 					for (var i = 0; i < selector.length; i++) {
-						selector[i].addEventListener(myEvent, events[e].bind(module));
+						selector[i].addEventListener(myEvent, module.events[e].bind(module));
 					}
 				} else {
 					throw 'Could not find ' + selector + ' while trying to create ' + myEvent + ' event in module.';

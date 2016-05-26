@@ -6,3 +6,4 @@ App.container.sortable();
 
 // Startup the App
 App.Core.startAll();
+App.container.fadeIn('slow');
