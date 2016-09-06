@@ -2,9 +2,7 @@
 
 	Author: Noah Damiani
 	
-	Define your web app: App.container = document.getElementById('#your-app-name') |or jquery| $('#your-app-name');
-	Define Modules, reference module-example.js
-	Start module core: App.Core.startAll();
+	Run your web app with App.run('your-app-container-id') * div id="my-app" used in example
 	
 */
 
@@ -35,18 +33,25 @@ App.Core = function() {
 
 	return {
 
-		register: function(moduleId, generator) {
+		register: function(moduleId, moduleView) {			
 			moduleData[moduleId] = {
-				generator: generator,
+				generator: function(ch) {
+					moduleView.ch = ch;
+					return moduleView;
+				},
 				instance: null
 			};
+		},
+
+		registerAll: function() {
+			for (var view in App.views) {
+				this.register(view, App.views[view]);
+			}
 		},
 
 		start: function(moduleId) {
 			var mi = moduleData[moduleId].instance;
 			mi = moduleData[moduleId].generator(new Chassis(this));
-			mi.elString = mi.el;
-			mi.el = document.querySelector(mi.el);
 			mi.init();
 			this.eventMapper(mi);
 		},
@@ -79,7 +84,7 @@ App.Core = function() {
 			for (e in module.events) {
 				var myEvent = e.substr(0, e.indexOf(' ')),
 					second = e.substr(e.indexOf(' ')+1),
-					selector = document.querySelectorAll(module.elString + ' ' + second);
+					selector = document.querySelectorAll(App.id + ' ' + module.el + ' ' + second);
 				if(selector.length) {
 					for (var i = 0; i < selector.length; i++) {
 						selector[i].addEventListener(myEvent, module.events[e].bind(module));
@@ -91,3 +96,13 @@ App.Core = function() {
 		}
 	};
 }();
+
+App.views = [];
+
+App.run = function(container) {
+	if (container.length) {	
+		App.id = container;		
+	}
+	App.Core.registerAll();
+	App.Core.startAll();
+}
